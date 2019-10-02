@@ -206,7 +206,6 @@ AIC(cos1.x, bg1.x, data1)
 BIC(cos1.x, bg1.x, data1)
 bayesian1()
 
-print("========================================================================")
 print("\n2-6keV")
 frequentist(cos2.x, bg2.x, data2)
 AIC(cos2.x, bg2.x, data2)
@@ -216,58 +215,4 @@ bayesian2()
 plot(cos1.x, cos2.x, bg1.x, bg2.x)
 
 #==============================================================================
-#==============================================================================
-#-----------------MODULATION-------------------
-"""
-w=2.0*np.pi/365.0
-t_0=-62.2
-def fit_cosine(x,S,R0,R1,tau):
-    	return R0 + R1*np.exp(-x/tau) + S*np.cos(w*(x+t_0))
 
-def chi2_cosine(P,DATA):
-    y_fit=fit_cosine(DATA[0],P[0],P[1],P[2],P[3])
-    sigma=DATA[2]
-    r = (DATA[1] - y_fit)/sigma
-    return np.sum(r**2)
-
-def log_likelihood_cosine(P,DATA):
-    y_fit=fit_cosine(DATA[0],P[0],P[1],P[2],P[3])
-    return sum(stats.norm.logpdf(*args) for args in zip(DATA[1],y_fit,DATA[2]))
-
-guess1=[0,bg1.x[0],bg1.x[1],bg1.x[2]]
-guess2=[0,bg2.x[0],bg2.x[1],bg2.x[2]]
-
-cos1 = optimize.minimize(chi2_cosine, guess1,args=data1,method='BFGS')
-cos2 = optimize.minimize(chi2_cosine, guess2,args=data2,method='BFGS')
-
-
-def plot(P1,P2,k1,k2):
-       
-    fig,ax=plt.subplots(nrows=2,ncols=1,figsize=(10,4))
-    
-    plt.subplot(211)
-    plt.xlim(-20,650)
-    p1 = np.linspace(data1[0].min(),data1[0].max(),10000)   
-    plt.plot(p1, fit_cosine(p1,P1[0],P1[1],P1[2],P1[3]), color = 'red',label='$H_1$',linewidth=1.6)
-    plt.scatter(data1[0],data1[1],c='black',s=20)
-    plt.plot(p1, fit_bg(p1,k1[0],k1[1],k1[2]),color='dodgerblue',lw=1,linestyle='--',label='$H_0$' ,linewidth=1.75)
-    plt.grid(color='w')
-    plt.errorbar(data1[0],data1[1],yerr = data1[2],fmt='none',alpha=0.6,c='black')
-    plt.legend(loc='upper right',fontsize=13,title='1-6keV',title_fontsize=13)
-    plt.tick_params(axis='both',labelsize=14)
-    
-    
-    plt.subplot(212)
-    plt.xlim(-20,650)
-    p2 = np.linspace(data2[0].min(),data2[0].max(),10000)
-    plt.plot(p2, fit_cosine(p2,P2[0],P2[1],P2[2],P2[3]), color = 'red',label='$H_1$',linewidth=1.6)
-    plt.scatter(data2[0],data2[1],c='black',s=20)
-    plt.plot(p2, fit_bg(p2,k2[0],k2[1],k2[2]), color='dodgerblue',lw=1,linestyle='--',label='$H_0$',linewidth=1.75 )
-    plt.grid(color='w')
-    plt.errorbar(data2[0],data2[1],yerr = data2[2], 
-                     fmt='none',alpha=0.6,c='black')
-    plt.legend(loc='upper right',fontsize=13,title='2-6keV',title_fontsize=13)
-    plt.tick_params(axis='both',labelsize=14)
-    
-plot(cos1.x, cos2.x, bg1.x, bg2.x)
-"""
