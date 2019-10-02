@@ -197,7 +197,7 @@ def plot(P1,P2,k1,k2):
     plt.legend(loc='upper right',fontsize=13,title='2-6keV',title_fontsize=13)
     plt.tick_params(axis='both',labelsize=14)
     
-    plt.savefig('try1fig.png')
+    #plt.savefig('fig2.png')
     
 
 print("\n1-6keV")
