@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Aug 30 12:14:28 2019
-
-@author: aditi
-"""
-
 
 import numpy as np 
 from scipy import optimize , stats
@@ -14,15 +6,14 @@ import nestle
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 
-f="fig2_16.dat"
-path=os.path.expanduser("~")+"/Desktop/anais112/data/"+f
+
+path=input('enter path to data file : ')
 t=open(path, "r")
 data1 = np.loadtxt(t)                    
 t.close()
 data1=np.transpose(data1)
 
-f="fig2_26.dat"
-path=os.path.expanduser("~")+"/Desktop/anais112/data/"+f
+path=input('enter path to data file : ')
 t=open(path, "r")
 data2 = np.loadtxt(t)                    
 t.close()
@@ -55,7 +46,7 @@ def chi2L_cosine(P,DATA):
   return stats.chi2(dof).pdf(chi2)
 
 
-#=========================constant function==========================
+#=========================constant background function==========================
 def fit_const(x,k):
     	return k[0]*x**0
 
@@ -117,13 +108,6 @@ def nestle_const(k,DATA):
     prior = lambda k: prior_transform_const(k,DATA)
     res = nestle.sample(f, prior, 1, method='multi',
                     npoints=2000)
-    """print(res.summary())
-    pm, covm = nestle.mean_and_cov(res.samples, res.weights)
-    nweights = res.weights/np.max(res.weights)
-    keepidx = np.where(np.random.rand(len(nweights)) < nweights)[0]
-    samples_nestle = res.samples[keepidx,:]
-    print(np.mean(samples_nestle[:,0])) # mean of m samples
-    print(np.std(samples_nestle[:,0]) )# standard deviation of m samples"""
     return res.logz
 
 def prior_transform_cosine(P,data):
@@ -136,17 +120,6 @@ def nestle_cosine(P,DATA):
     prior = lambda P: prior_transform_cosine(P,DATA)
     res = nestle.sample(f, prior, 3, method='multi',
                     npoints=2000)
-    """print(res.summary())
-    pm, covm = nestle.mean_and_cov(res.samples, res.weights)
-    nweights = res.weights/np.max(res.weights)
-    keepidx = np.where(np.random.rand(len(nweights)) < nweights)[0]
-    samples_nestle = res.samples[keepidx,:]
-    print(np.mean(samples_nestle[:,0]))      # mean of m samples
-    print(np.std(samples_nestle[:,0])      )# standard deviation of m samples
-    print( np.mean(samples_nestle[:,1])    )  # mean of c samples
-    print( np.std(samples_nestle[:,1])    )  # standard deviation of c samples
-    print( np.mean(samples_nestle[:,2])    )  # mean of c samples
-    print( np.std(samples_nestle[:,2])    )  # standard deviation of c samples"""
     return res.logz
   
 def bayesian(P,k,data):
@@ -185,7 +158,7 @@ def plot(P1,P2,k1,k2):
     plt.legend(loc='upper right',fontsize=13,title='2-6keV',title_fontsize=13)
     plt.tick_params(axis='both',labelsize=14)
     
-    #plt.savefig('try0fig.png')
+    #plt.savefig('fig.png')
 
 
 #==============================================================================
@@ -207,13 +180,12 @@ print("\n1-6keV")
 frequentist(cos1.x, k1.x, data1)
 AIC(cos1.x, k1.x, data1)
 BIC(cos1.x, k1.x, data1)
-#bayesian(cos1.x, k1.x, data1)
+bayesian(cos1.x, k1.x, data1)
 
-print("========================================================================")
 print("\n2-6keV")
 frequentist(cos2.x, k2.x, data2)
 AIC(cos2.x, k2.x, data2)
 BIC(cos2.x, k2.x, data2)
-#bayesian(cos2.x, k2.x, data2)
+bayesian(cos2.x, k2.x, data2)
 
 plot(cos1.x, cos2.x, k1.x, k2.x)
