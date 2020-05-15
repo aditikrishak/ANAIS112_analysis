@@ -139,15 +139,15 @@ def plot(P1,P2,k1,k2):
 
 g=[0]
 
-k1 = optimize.minimize(chi2_val_const, g,args=data1,method='BFGS')
-k2 = optimize.minimize(chi2_val_const, g,args=data2,method='BFGS')
+k1 = optimize.minimize(chi2_val_const, g,args=data1,method='SLSQP')
+k2 = optimize.minimize(chi2_val_const, g,args=data2,method='SLSQP')
 
 guess=[0,0.0172,0]
 
+bounds=([-np.inf,2.*np.pi/545,-np.inf], [np.inf, 2.*np.pi/10.0, np.inf])
+popt1, pcov1 =optimize.curve_fit(fit_cosine, data1[0], data1[1], p0=guess, sigma=data1[2],bounds=bounds)
 
-popt1, pcov1 =optimize.curve_fit(fit_cosine, data1[0], data1[1], p0=guess, sigma=data1[2])
-
-popt2, pcov2 = optimize.curve_fit(fit_cosine, data2[0], data2[1], p0=guess, sigma=data2[2])
+popt2, pcov2 = optimize.curve_fit(fit_cosine, data2[0], data2[1], p0=guess, sigma=data2[2],bounds=bounds)
 
 
 print("H_0 : No modulation, constant fit")
